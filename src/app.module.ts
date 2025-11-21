@@ -6,6 +6,7 @@ import { ConfigModule } from '@nestjs/config';
 import { WpUsersModule } from './wp-users/wp-users.module';
 import { WpUsermetaModule } from './wp-usermeta/wp-usermeta.module';
 import { OdapasReportesModule } from './reportes/odapas-reportes.module';
+import { UsuarioModule } from './usuario/usuario.module';
 
 @Module({
   imports: [
@@ -22,7 +23,8 @@ import { OdapasReportesModule } from './reportes/odapas-reportes.module';
     }),
     WpUsersModule,
     WpUsermetaModule,
-    OdapasReportesModule
+    OdapasReportesModule,
+    UsuarioModule
   ],
   controllers: [AppController],
   providers: [AppService],

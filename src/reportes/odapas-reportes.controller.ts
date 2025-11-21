@@ -1,9 +1,11 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@nestjs/common';
 import { OdapasReportesService } from './odapas-reportes.service';
 import { CreateOdapasReporteDto } from './dto/create-odapas-reporte.dto';
 import { UpdateOdapasReporteDto } from './dto/update-odapas-reporte.dto';
+import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 
-@Controller('odapas-reportes')
+@UseGuards(JwtAuthGuard)
+@Controller('reportes')
 export class OdapasReportesController {
   constructor(private readonly service: OdapasReportesService) {}
 
@@ -11,7 +13,7 @@ export class OdapasReportesController {
   create(@Body() dto: CreateOdapasReporteDto) {
     return this.service.create(dto);
   }
-
+  
   @Get()
   findAll() {
     return this.service.findAll();
