@@ -7,6 +7,7 @@ import { WpUsersModule } from './wp-users/wp-users.module';
 import { WpUsermetaModule } from './wp-usermeta/wp-usermeta.module';
 import { OdapasReportesModule } from './reportes/odapas-reportes.module';
 import { UsuarioModule } from './usuario/usuario.module';
+import { BitacoraModule } from './bitacora/bitacora.module';
 
 @Module({
   imports: [
@@ -24,9 +25,10 @@ import { UsuarioModule } from './usuario/usuario.module';
     WpUsersModule,
     WpUsermetaModule,
     OdapasReportesModule,
-    UsuarioModule
+    UsuarioModule,
+    BitacoraModule
   ],
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule {}
+export class AppModule { }

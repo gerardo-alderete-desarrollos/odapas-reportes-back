@@ -1,4 +1,5 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import { Bitacora } from 'src/bitacora/bitacora.entity';
+import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
 
 @Entity('odapas_reportes')
 export class OdapasReporte {
@@ -40,4 +41,8 @@ export class OdapasReporte {
 
   @Column({ length: 100 })
   area: string;
+
+  @OneToMany(() => Bitacora, (bitacora) => bitacora.reporte)
+  bitacoras: Bitacora[];
+
 }
