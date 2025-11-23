@@ -1,7 +1,9 @@
-import { Controller, Get, Post, Body, Param, Patch, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Patch, Delete, UseGuards } from '@nestjs/common';
 import { BitacoraService } from './bitacora.service';
 import { CreateBitacoraDto } from './dto/create-bitacora.dto';
 import { UpdateBitacoraDto } from './dto/update-bitacora.dto';
+import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
+@UseGuards(JwtAuthGuard)
 
 @Controller('bitacora')
 export class BitacoraController {

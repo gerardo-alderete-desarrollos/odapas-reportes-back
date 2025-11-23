@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateOdapasReporteDto } from './dto/create-odapas-reporte.dto';
@@ -10,7 +10,7 @@ export class OdapasReportesService {
   constructor(
     @InjectRepository(OdapasReporte)
     private readonly reportesRepo: Repository<OdapasReporte>,
-  ) {}
+  ) { }
 
   async create(dto: CreateOdapasReporteDto): Promise<OdapasReporte> {
     const entity = this.reportesRepo.create({
@@ -18,7 +18,16 @@ export class OdapasReportesService {
       fecha: dto.fecha ?? new Date(),
     });
 
-    return await this.reportesRepo.save(entity);
+
+
+    if (await this.canCreateReport(entity.categoria, entity.subcategoria, entity.ubicacion)) {
+      return await this.reportesRepo.save(entity);
+
+    }
+
+    throw new ConflictException(
+      'Ya existe un reporte asignado para esta categoría, subcategoría y ubicación'
+    );
   }
 
   findAll(): Promise<OdapasReporte[]> {
@@ -40,5 +49,13 @@ export class OdapasReportesService {
   async remove(id: number): Promise<void> {
     const existente = await this.findOne(id);
     await this.reportesRepo.remove(existente);
+  }
+  async canCreateReport(categoria: string, subcategoria: string, ubicacion: string): Promise<boolean> {
+    console.log({ categoria, subcategoria, ubicacion })
+    const reportes = await this.reportesRepo.find({ where: { categoria: categoria, subcategoria: subcategoria, ubicacion: ubicacion } });
+    const reportesFiltrados = reportes.filter(r => (r.estado.includes("pendiente") || r.estado.includes("asingnado")))
+    console.log({ reportesFiltrados })
+    if (reportesFiltrados.length > 0) return false;
+    return true;
   }
 }
